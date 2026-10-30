@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lesyiaa</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #050505;
+      color: #fff;
+      font-family: "Courier New", monospace;
+    }
+
+    .background {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .shade {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .35);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        transparent 0px,
+        transparent 3px,
+        rgba(0, 0, 0, .15) 4px
+      );
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    header {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      z-index: 2;
+      font-size: 20px;
+      letter-spacing: 5px;
+      text-shadow: 0 0 10px #fff;
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(55px, 12vw, 140px);
+      letter-spacing: 6px;
+      text-shadow: 3px 0 #b80025, 0 0 18px #fff;
+      overflow-wrap: anywhere;
+    }
+
+    .status {
+      font-size: 12px;
+      letter-spacing: 5px;
+    }
+
+    h2 {
+      margin: 22px 0;
+      font-size: clamp(16px, 3vw, 28px);
+      font-weight: normal;
+      letter-spacing: 8px;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .menu-item {
+      display: inline-block;
+      border: 1px solid transparent;
+      padding: 10px 18px;
+      background: rgba(0, 0, 0, .25);
+      color: white;
+      font: inherit;
+      font-size: 12px;
+      letter-spacing: 5px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .menu-item:hover {
+      border-color: white;
+      background: rgba(150, 0, 25, .45);
+    }
+
+    .menu-item:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 4px;
+    }
+
+    .terminal {
+      position: fixed;
+      z-index: 2;
+      width: 210px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      padding: 12px;
+      background: rgba(0, 0, 0, .55);
+      font-size: 10px;
+      line-height: 1.8;
+      box-shadow: 0 0 12px #ffffff15;
+    }
+
+    .dots {
+      letter-spacing: 4px;
+      margin-bottom: 6px;
+    }
+
+    .top-left { top: 85px; left: 30px; }
+    .top-right { top: 85px; right: 30px; }
+    .bottom-left { bottom: 30px; left: 30px; }
+    .bottom-right { bottom: 30px; right: 30px; }
+
+    #notice {
+      min-height: 35px;
+      max-width: 330px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #ddd;
+    }
+
+    .video-toggle {
+      position: fixed;
+      right: 20px;
+      top: 20px;
+      z-index: 4;
+      padding: 8px 12px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, .65);
+      color: white;
+      font: inherit;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 650px) {
+      header { top: 20px; left: 20px; }
+      .terminal {
+        width: 145px;
+        font-size: 8px;
+        padding: 8px;
+      }
+      .top-left, .top-right { display: none; }
+      .bottom-left { left: 10px; bottom: 15px; }
+      .bottom-right { right: 10px; bottom: 15px; }
+      h2 { letter-spacing: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <video
+    id="background"
+    class="background"
+    autoplay
+    muted
+    loop
+    playsinline
+    aria-hidden="true"
+  >
+    <source src="./background.mp4" type="video/mp4">
+  </video>
+
+  <div class="shade"></div>
+  <div class="scanlines"></div>
+
+  <header>lesyiaa</header>
+
+  <button
+    type="button"
+    class="video-toggle"
+    id="video-toggle"
+  >Videoyu durdur</button>
+
+  <!-- Bu kutular yalnızca görsel dekorasyondur. -->
+  <aside class="terminal top-left" aria-hidden="true">
+    <div class="dots">●●●</div>
+    root@lesyiaa:~$ init<br>
+    [OK] INTERFACE LOADED<br>
+    [OK] VISUAL SYSTEM READY<br>
+    root@lesyiaa:~$ _
+  </aside>
+
+  <aside class="terminal top-right" aria-hidden="true">
+    <div class="dots">●●●</div>
+    SCANNING NODES...<br>
+    &gt; NODE_01 ... ONLINE<br>
+    &gt; NODE_02 ... ONLINE<br>
+    CONNECTED: 2/2
+  </aside>
+
+  <main>
+    <h1>lesyiaa</h1>
+    <p class="status">SYSTEM READY</p>
+    <h2>ACCESS GRANTED</h2>
+
+    <nav aria-label="Ana menü">
+      <button
+        type="button"
+        class="menu-item"
+        id="login"
+      >LOGIN ↗</button>
+
+      <a
+        class="menu-item"
+        id="whatsapp"
+        href="https://wa.me/905317263642?text=LESY%C4%B0A%20S%C4%B0KER%20ATAR"
+        target="_blank"
+        rel="noopener noreferrer"
+      >WHATSAPP ↗</a>
+    </nav>
+
+    <p id="notice" role="status"></p>
+  </main>
+
+  <aside class="terminal bottom-left" aria-hidden="true">
+    <div class="dots">●●●</div>
+    lesyiaa VISUAL INTERFACE<br>
+    STATUS: READY<br>
+    BACKGROUND: LOOP
+  </aside>
+
+  <aside class="terminal bottom-right" aria-hidden="true">
+    <div class="dots">●●●</div>
+    DISPLAY MODE: DEMO<br>
+    THEME: CRIMSON<br>
+    WELCOME TO lesyiaa _
+  </aside>
+
+  <script>
+    const notice = document.getElementById("notice");
+    const video = document.getElementById("background");
+    const toggle = document.getElementById("video-toggle");
+
+    document.getElementById("login").onclick = () => {
+      notice.textContent = "Giriş sayfası yakında eklenecek.";
+    };
+
+    function updateVideoButton() {
+      toggle.textContent = video.paused
+        ? "Videoyu oynat"
+        : "Videoyu durdur";
+    }
+
+    video.addEventListener("play", updateVideoButton);
+    video.addEventListener("pause", updateVideoButton);
+    updateVideoButton();
+
+    toggle.onclick = async () => {
+      if (video.paused) {
+        try {
+          await video.play();
+          notice.textContent = "";
+        } catch {
+          notice.textContent = "Video oynatılamadı. Sayfayı yenileyip tekrar dene.";
+        }
+      } else {
+        video.pause();
+      }
+      updateVideoButton();
+    };
+  </script>
+</body>
+</html>
