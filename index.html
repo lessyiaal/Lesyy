@@ -300,69 +300,38 @@ href="https://statcounter.com/" target="_blank"><img class="statcounter"
 src="https://c.statcounter.com/13364111/0/db359772/1/" alt="Web Analytics"
 referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <!-- End of Statcounter Code -->
-<section id="visit-consent" aria-label="İsteğe bağlı ziyaret kaydı"
-  style="position:fixed;bottom:12px;left:50%;transform:translateX(-50%);
-  width:min(440px,calc(100% - 24px));z-index:10;
-  background:#111;color:#fff;border:1px solid #888;
-  padding:16px;border-radius:8px;font:13px/1.6 Arial,sans-serif;">
-
-  <p style="margin:0 0 12px;">
-    İsteğe bağlı ziyaret ölçümü için IP adresiniz ve ziyaret
-    zamanınız Cloudflare üzerinden alınarak JSONBin’de saklanır.
-    Onay vermeden de siteyi kullanabilirsiniz.
-  </p>
-
-  <button type="button" id="visit-accept">
-    İzin ver
-  </button>
-  <button type="button" id="visit-decline">
-    İzin verme
-  </button>
-
-  <p id="visit-result" role="status" style="margin:8px 0 0;"></p>
-</section>
+<div style="position:relative;z-index:4;padding:12px;
+background:#111;color:#ddd;text-align:center;
+font:12px/1.6 Arial,sans-serif;">
+  Ziyaret ölçümü ve güvenlik incelemesi için IP adresi ve
+  ziyaret zamanı Cloudflare üzerinden JSONBin’e kaydedilir.
+</div>
 
 <script>
-(() => {
-  const box = document.getElementById("visit-consent");
-  const accept = document.getElementById("visit-accept");
-  const decline = document.getElementById("visit-decline");
-  const result = document.getElementById("visit-result");
-
-  decline.onclick = () => {
-    box.remove();
-  };
-
-  accept.onclick = async () => {
-    accept.disabled = true;
-    result.textContent = "Kaydediliyor…";
-
-    try {
-      const response = await fetch(
-        "https://lesyiaa-visits.lessyiaal.workers.dev/",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ consent: true }),
-          credentials: "omit"
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Kayıt başarısız");
+(async () => {
+  try {
+    const response = await fetch(
+      "https://lesyiaa-visits.lessyiaal.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ event: "page_visit" }),
+        credentials: "omit"
       }
+    );
 
-      result.textContent = "Teşekkürler, ziyaret kaydedildi.";
-      accept.hidden = true;
-      decline.textContent = "Kapat";
-    } catch {
-      result.textContent =
-        "Kayıt yapılamadı. Siteyi kullanmaya devam edebilirsiniz.";
-      accept.disabled = false;
+    if (!response.ok) {
+      console.warn("Ziyaret kaydı başarısız:", response.status);
     }
-  };
+  } catch {
+    console.warn("Ziyaret kayıt servisine ulaşılamadı.");
+  }
 })();
 </script>
+
+
 
 </body>
 </html>
